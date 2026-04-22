@@ -1,0 +1,39 @@
+# Build outputs
+target/
+build/
+dist/
+out/
+
+# Maven helper files
+dependency-reduced-pom.xml
+
+# Logs
+*.log
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE / editor
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+nbproject/private/
+
+# Java / JVM
+*.class
+hs_err_pid*
+replay_pid*
+
+# Temporary files
+*.tmp
+*.swp
+*~
+
+# Environment / secrets
+.env
+.env.*
+

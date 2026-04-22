@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.Font?>
+<?import org.kordamp.ikonli.javafx.FontIcon?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="com.java2exe.controller.MainController" styleClass="root">
+    
+    <fx:define>
+        <ToggleGroup fx:id="packageTypeGroup"/>
+    </fx:define>
+    
+    <!-- ============ HEADER ============ -->
+    <top>
+        <BorderPane styleClass="header-bar">
+            <left>
+                <Region prefWidth="150"/>
+            </left>
+            <center>
+                <VBox alignment="CENTER" spacing="0">
+                    <StackPane>
+                        <ImageView fx:id="appLogoView" fitWidth="168" fitHeight="168" pickOnBounds="true" preserveRatio="true" styleClass="app-logo"/>
+                    </StackPane>
+                </VBox>
+            </center>
+            <right>
+                <HBox alignment="CENTER_RIGHT" spacing="10">
+                    <Label text="v1.1" styleClass="version-tag"/>
+                    <Button fx:id="themeToggle" onAction="#toggleTheme" styleClass="theme-toggle icon-only-button" text="" prefWidth="38" prefHeight="32">
+                        <graphic>
+                            <FontIcon fx:id="themeIcon" iconLiteral="fas-moon" iconSize="13" styleClass="button-icon"/>
+                        </graphic>
+                        <tooltip>
+                            <Tooltip text="Toggle Theme"/>
+                        </tooltip>
+                    </Button>
+                </HBox>
+            </right>
+        </BorderPane>
+    </top>
+    
+    <!-- ============ MAIN CONTENT ============ -->
+    <center>
+        <ScrollPane fitToWidth="true" styleClass="scroll-pane">
+            <VBox spacing="20" alignment="TOP_CENTER">
+                <padding>
+                    <Insets top="25" right="30" bottom="25" left="30"/>
+                </padding>
+
+                <HBox maxWidth="900" spacing="10" styleClass="flow-tracker">
+                    <Label fx:id="flowStepSource" text="Source Setup" styleClass="flow-step-pill flow-step-active"/>
+                    <Label fx:id="flowStepIdentity" text="App Identity" styleClass="flow-step-pill"/>
+                    <Label fx:id="flowStepOutput" text="Package Options" styleClass="flow-step-pill"/>
+                </HBox>
+                <Label fx:id="validationMessageLabel" text="" styleClass="validation-message" visible="false" managed="false" maxWidth="900"/>
+                
+                <!-- ===== SECTION 1: SOURCE ===== -->
+                <VBox fx:id="section1Card" spacing="8" maxWidth="900" styleClass="section-card card-hover">
+                    <Label text="Stage: Source Setup" styleClass="section-number"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <FontIcon iconLiteral="fas-folder-open" iconSize="14" styleClass="section-icon"/>
+                        <Label text="Select Project Source" styleClass="section-title"/>
+                    </HBox>
+                    <Label text="Select your Java project or JAR, then confirm the main entry class." styleClass="step-description"/>
+                    
+                    <GridPane hgap="15" vgap="12">
+                        <columnConstraints>
+                            <ColumnConstraints minWidth="120"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                            <ColumnConstraints minWidth="100"/>
+                        </columnConstraints>
+                        
+                        <Label text="Project Path:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                        <TextField fx:id="projectPathField" promptText="Select project folder or JAR file" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                        <Button fx:id="browseButton" onAction="#handleBrowse" styleClass="button-yellow" GridPane.rowIndex="0" GridPane.columnIndex="2" maxWidth="Infinity" text="Browse">
+                            <graphic>
+                                <FontIcon iconLiteral="fas-folder-open" iconSize="12" styleClass="button-icon"/>
+                            </graphic>
+                        </Button>
+                        
+                        <Label text="Main Class:" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                        <TextField fx:id="mainClassField" promptText="com.example.MainApp" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                        <Label text="Auto-detected after selecting source" styleClass="step-hint" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                        
+                        <Label text="Ant Target:" styleClass="label-bold" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                        <TextField fx:id="antBuildTargetField" promptText="Optional (e.g., jar, clean, deploy)" styleClass="text-field" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+                    </GridPane>
+                    <HBox alignment="CENTER_RIGHT">
+                        <Button fx:id="step1NextButton" onAction="#handleStep1Next" text="Next: App Details" styleClass="button-nav-primary"/>
+                    </HBox>
+                </VBox>
+                
+                <!-- ===== SECTION 2: APPLICATION DETAILS ===== -->
+                <VBox fx:id="section2Card" spacing="8" maxWidth="900" styleClass="section-card card-hover" visible="false" managed="false">
+                    <Label text="Stage: App Identity" styleClass="section-number"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <FontIcon iconLiteral="fas-id-card" iconSize="14" styleClass="section-icon"/>
+                        <Label text="Define Application Identity" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="section2Toggle" onAction="#handleToggleSection2" text="Collapse" styleClass="section-toggle"/>
+                    </HBox>
+                    <Label text="Set how the app appears to users: name, version, vendor, icon, and optional license." styleClass="step-description"/>
+                    <VBox fx:id="section2Content" spacing="8">
+                        <GridPane hgap="15" vgap="12">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="120"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints minWidth="80"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            
+                            <Label text="App Name:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="appNameField" promptText="My Application" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            
+                            <Label text="Version:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="2"/>
+                            <TextField fx:id="versionField" text="1.0.0" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="3"/>
+                            
+                            <Label text="Vendor:" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <TextField fx:id="vendorField" promptText="Your Company" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+                            
+                            <Label text="Icon (.ico only):" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="2"/>
+                            <HBox spacing="5" GridPane.rowIndex="1" GridPane.columnIndex="3">
+                                <TextField fx:id="iconPathField" promptText="path/to/icon.ico" styleClass="text-field" HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="iconBrowseButton" onAction="#handleIconBrowse" styleClass="button-yellow icon-only-button" minWidth="45">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fas-image" iconSize="12" styleClass="button-icon"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                            
+                            <Label text="License:" styleClass="label-bold" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+                            <HBox spacing="5" GridPane.rowIndex="2" GridPane.columnIndex="1" GridPane.columnSpan="3">
+                                <TextArea fx:id="licenseFileField" promptText="Paste End User License Agreement (EULA) text here" styleClass="text-area" prefRowCount="6" wrapText="true" HBox.hgrow="ALWAYS"/>
+                                <Button fx:id="licenseBrowseButton" onAction="#handleLicenseBrowse" styleClass="button-yellow icon-only-button" minWidth="45">
+                                    <graphic>
+                                        <FontIcon iconLiteral="fas-file-contract" iconSize="12" styleClass="button-icon"/>
+                                    </graphic>
+                                </Button>
+                            </HBox>
+                        </GridPane>
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Button fx:id="step2BackButton" onAction="#handleStep2Back" text="Back" styleClass="button-nav-secondary"/>
+                            <Button fx:id="step2NextButton" onAction="#handleStep2Next" text="Next: Output Options" styleClass="button-nav-primary"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+                
+                <!-- ===== SECTION 3: OUTPUT CONFIGURATION ===== -->
+                <VBox fx:id="section3Card" spacing="8" maxWidth="900" styleClass="section-card card-hover" visible="false" managed="false">
+                    <Label text="Stage: Package Options" styleClass="section-number"/>
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <FontIcon iconLiteral="fas-cogs" iconSize="14" styleClass="section-icon"/>
+                        <Label text="Configure Package Output" styleClass="section-title"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button fx:id="section3Toggle" onAction="#handleToggleSection3" text="Collapse" styleClass="section-toggle"/>
+                    </HBox>
+                    <Label text="Choose output location, package type, and bundling options before validate/build." styleClass="step-description"/>
+                    <VBox fx:id="section3Content" spacing="8">
+                        <GridPane hgap="15" vgap="12">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="120"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                                <ColumnConstraints minWidth="110"/>
+                            </columnConstraints>
+                            
+                            <Label text="Output Dir:" styleClass="label-bold" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+                            <TextField fx:id="outputDirField" styleClass="text-field" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+                            <Button fx:id="outputBrowseButton" onAction="#handleOutputBrowse" styleClass="button-yellow" GridPane.rowIndex="0" GridPane.columnIndex="2" text="Browse">
+                                <graphic>
+                                    <FontIcon iconLiteral="fas-save" iconSize="12" styleClass="button-icon"/>
+                                </graphic>
+                            </Button>
+                            
+                            <Label text="JVM Options:" styleClass="label-bold" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+                            <TextField fx:id="jvmOptionsArea" promptText="-Xmx512m -XX:+UseG1GC" styleClass="text-field" GridPane.rowIndex="1" GridPane.columnIndex="1" GridPane.columnSpan="2"/>
+                        </GridPane>
+                        
+                        <!-- Package Format -->
+                        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-padding: 10 0 5 0;">
+                            <Label text="Format:" styleClass="toggle-group-label"/>
+                            <RadioButton text="Installable (.exe/.msi)" toggleGroup="$packageTypeGroup" userData="installable" selected="true" styleClass="radio-button"/>
+                            <RadioButton text="Portable (App Image)" toggleGroup="$packageTypeGroup" userData="portable" styleClass="radio-button"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="detectedOsLabel" text="Target: Windows" styleClass="label" style="-fx-text-fill: -color-accent; -fx-font-weight: bold;"/>
+                        </HBox>
+                        
+                        <!-- Bundling Options -->
+                        <VBox spacing="8" style="-fx-padding: 10 0 0 0;">
+                            <CheckBox fx:id="includeJRECheck" text="Bundle Self-Contained JRE (no Java installation required)" selected="true" styleClass="check-box"/>
+                            <HBox spacing="20" alignment="CENTER_LEFT">
+                                <CheckBox fx:id="desktopShortcutCheck" text="Desktop Shortcut" selected="true" styleClass="check-box"/>
+                                <CheckBox fx:id="startMenuCheck" text="Start Menu" selected="true" styleClass="check-box"/>
+                                <CheckBox fx:id="startupCheck" text="Run on Startup" styleClass="check-box"/>
+                                <CheckBox fx:id="debugSymbolsCheck" text="Debug Console" styleClass="check-box"/>
+                            </HBox>
+                        </VBox>
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button fx:id="step3BackButton" onAction="#handleStep3Back" text="Back" styleClass="button-nav-secondary"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+                
+                <!-- ===== SECTION 4: CONSOLE ===== -->
+                <VBox spacing="8" maxWidth="900">
+                    <HBox alignment="CENTER_LEFT" spacing="8">
+                        <FontIcon iconLiteral="fas-terminal" iconSize="14" styleClass="section-icon"/>
+                        <Label text="CONSOLE OUTPUT" styleClass="section-title" style="-fx-text-fill: -color-fg-muted;"/>
+                    </HBox>
+                    <TextArea fx:id="logArea" editable="false" prefRowCount="8" styleClass="console-area"/>
+                </VBox>
+            </VBox>
+        </ScrollPane>
+    </center>
+    
+    <!-- ============ BOTTOM BAR ============ -->
+    <bottom>
+        <VBox>
+            <ProgressBar fx:id="progressBar" progress="0.0" maxWidth="Infinity" prefHeight="3" styleClass="progress-bar"/>
+            <HBox alignment="CENTER_LEFT" spacing="15" styleClass="bottom-bar">
+                <!-- Status Indicator -->
+                <HBox alignment="CENTER" spacing="8">
+                    <ProgressIndicator fx:id="busyIndicator" prefWidth="16" prefHeight="16" visible="false" managed="false" styleClass="busy-indicator"/>
+                    <Circle fx:id="statusDot" radius="5" styleClass="status-indicator"/>
+                    <Label fx:id="statusLabel" text="Ready" styleClass="status-text"/>
+                </HBox>
+                
+                <Region HBox.hgrow="ALWAYS"/>
+                
+                <!-- Action Buttons -->
+                <Button fx:id="cancelButton" onAction="#handleCancel" styleClass="button-red" prefWidth="110" text="Cancel">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-ban" iconSize="12" styleClass="button-icon"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="validateButton" onAction="#handleValidate" styleClass="button-yellow" prefWidth="130" text="Validate">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-shield-alt" iconSize="12" styleClass="button-icon"/>
+                    </graphic>
+                </Button>
+                <Button fx:id="buildButton" onAction="#handleBuild" styleClass="button-green" prefWidth="170" text="Build Package">
+                    <graphic>
+                        <FontIcon iconLiteral="fas-rocket" iconSize="12" styleClass="button-icon"/>
+                    </graphic>
+                </Button>
+            </HBox>
+        </VBox>
+    </bottom>
+</BorderPane>
