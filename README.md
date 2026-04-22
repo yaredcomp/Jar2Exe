@@ -75,8 +75,3 @@ By default, packages are generated in a configurable output folder (for example 
   If another image format is provided, the app attempts conversion for compatibility.
 - Some packaging behavior depends on the source project structure and available build tools.
 
-## License
-
-No explicit open-source license file is currently included in this repository.  
-Add a `LICENSE` file if you want to define distribution terms for the project itself.
-
