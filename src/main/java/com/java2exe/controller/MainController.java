@@ -98,6 +98,7 @@ public class MainController {
   @FXML private TextField vendorField;
   @FXML private TextField iconPathField;
   @FXML private TextArea licenseFileField;
+  @FXML private CheckBox licenseAgreementCheck;
   @FXML private TextField jvmOptionsArea;
   @FXML private TextField outputDirField;
   @FXML private CheckBox includeJRECheck;
@@ -180,8 +181,10 @@ public class MainController {
     requiredInputsValid = Bindings.createBooleanBinding(
       () -> !isBlank(projectPathField) && !isBlank(mainClassField) && !isBlank(appNameField),
       projectPathField.textProperty(), mainClassField.textProperty(), appNameField.textProperty());
-    validateButton.disableProperty().bind(requiredInputsValid.not().or(taskRunning));
-    buildButton.disableProperty().bind(requiredInputsValid.not().or(taskRunning));
+    
+    step2NextButton.disableProperty().bind(licenseAgreementCheck.selectedProperty().not());
+    validateButton.disableProperty().bind(requiredInputsValid.not().or(taskRunning).or(licenseAgreementCheck.selectedProperty().not()));
+    buildButton.disableProperty().bind(requiredInputsValid.not().or(taskRunning).or(licenseAgreementCheck.selectedProperty().not()));
   }
 
   private boolean isBlank(TextField f) { return f.getText() == null || f.getText().isBlank(); }
@@ -207,6 +210,10 @@ public class MainController {
 
   @FXML
   private void handleBuild() {
+    if (!licenseAgreementCheck.isSelected()) {
+        showAlert("License Required", "You must agree to the license terms before building.");
+        return;
+    }
     ProjectConfig config = createConfigFromUI();
     taskRunning.set(true);
     startBusyMode("Building Package...");
@@ -216,6 +223,7 @@ public class MainController {
         Platform.runLater(() -> { stopBusyMode("Success", 1); showAlert("Build", "Complete!"); });
       } catch (Exception e) {
         Platform.runLater(() -> { stopBusyMode("Failed", 0); showAlert("Error", e.getMessage()); });
+        e.printStackTrace();
       } finally { Platform.runLater(() -> taskRunning.set(false)); }
     });
   }
@@ -228,6 +236,19 @@ public class MainController {
     c.setVersion(versionField.getText());
     c.setVendor(vendorField.getText());
     c.setOutputDir(outputDirField.getText());
+    c.setIconPath(iconPathField.getText());
+    c.setJvmOptions(jvmOptionsArea.getText());
+    c.setIncludeJre(includeJRECheck.isSelected());
+    c.setLicenseFile(licenseFileField.getText());
+    
+    if (packageTypeGroup.getSelectedToggle() instanceof RadioButton rb) {
+      c.setPackageType(rb.getText());
+    }
+    
+    c.setCreateDesktopShortcut(desktopShortcutCheck.isSelected());
+    c.setCreateStartMenuEntry(startMenuCheck.isSelected());
+    c.setGenerateDebugSymbols(debugSymbolsCheck.isSelected());
+
     return c;
   }
 

@@ -35,11 +35,11 @@ The project aims to simplify Java desktop distribution by providing a guided UI 
 
 - JDK 17 or newer
 - `jpackage` available (comes with modern JDKs)
+- **WiX Toolset (v3.11 or later)**: **Required** on Windows to create `.exe` or `.msi` installers. Ensure it is installed and the `bin` folder is added to your system `PATH`.
 - Build tools depending on source project:
   - Maven (`mvn`)
   - Gradle (`gradle`)
   - or Ant (`ant`)
-- For Windows installer creation (`.exe`/`.msi`), WiX may be required depending on `jpackage` configuration.
 
 ## Getting Started
 
@@ -74,9 +74,9 @@ By default, packages are generated in a configurable output folder (for example 
 - On Windows installable targets, `.ico` is preferred for icons.  
   If another image format is provided, the app attempts conversion for compatibility.
 - Some packaging behavior depends on the source project structure and available build tools.
+- If you encounter errors regarding "light.exe" or "candle.exe", double-check your WiX Toolset installation and PATH configuration.
 
 ## License
 
 No explicit open-source license file is currently included in this repository.  
 Add a `LICENSE` file if you want to define distribution terms for the project itself.
-

@@ -143,6 +143,9 @@
                                 </Button>
                             </HBox>
                         </GridPane>
+                        <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-padding: 10 0 0 0;">
+                            <CheckBox fx:id="licenseAgreementCheck" text="I have read and agree to the license terms" styleClass="check-box"/>
+                        </HBox>
                         <HBox alignment="CENTER_RIGHT" spacing="10">
                             <Button fx:id="step2BackButton" onAction="#handleStep2Back" text="Back" styleClass="button-nav-secondary"/>
                             <Button fx:id="step2NextButton" onAction="#handleStep2Next" text="Next: Output Options" styleClass="button-nav-primary"/>
