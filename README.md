@@ -1,82 +1,82 @@
-# JavaPackagerFX
+# Jar2Exe - Professional Java Application Packager
 
-JavaPackagerFX is a desktop utility built with JavaFX that helps developers package Java applications into distributable desktop bundles (especially Windows `.exe` installers) using `jpackage`.
+**Jar2Exe** is a powerful, user-friendly desktop utility designed to transform Java applications into professional, self-contained Windows executables (`.exe`). By providing a streamlined graphical interface for the JDK's `jpackage` tool, Jar2Exe allows developers to create production-ready installers with embedded JREs, custom icons, and integrated license agreements without the need for complex command-line scripts.
 
-## Project Goal
+---
 
-The project aims to simplify Java desktop distribution by providing a guided UI for:
+## 🚀 Key Features
 
-- selecting a Java project or JAR input
-- detecting and configuring the main class
-- defining app metadata (name, version, vendor, icon, license)
-- choosing packaging options (installable vs portable, shortcuts, menu, console)
-- executing packaging workflows without manually crafting long `jpackage` commands
+*   **Self-Contained Bundling:** Generate executables that include a private Java Runtime Environment (JRE), ensuring your app runs on any machine without requiring the user to install Java manually.
+*   **Integrated License Agreements:** Automatically embed EULAs (End User License Agreements) into the `.exe` installation wizard. Users must accept your terms before the software is installed.
+*   **Intelligent Source Detection:** Automatically detects main classes and project structures from JAR files or Maven project directories.
+*   **Native Windows Integration:** 
+    *   Custom Application Icons (.ico support).
+    *   Automatic Desktop Shortcut creation.
+    *   Start Menu integration.
+    *   Option to enable/disable the Debug Console for the final executable.
+*   **Modern JavaFX Interface:** Features a clean, multi-step workflow with a built-in light/dark theme toggle for a superior developer experience.
 
-## Key Features
+---
 
-- JavaFX UI with light/dark theme toggle
-- Multi-step flow for source, identity, and output configuration
-- Main-class auto-detection from project/JAR
-- Build support for Maven, Gradle, and Ant projects
-- Packaging through `jpackage`
-- Installer options for Windows (desktop shortcut, start menu, console)
-- Icon handling with Windows compatibility fallback/conversion
-- Inline validation feedback for required fields
-- Editable default EULA text, with automatic license file generation during packaging
+## 🛠 Tech Stack
 
-## Tech Stack
+*   **Language:** Java 17+
+*   **UI Framework:** JavaFX with AtlantaFX (Modern CSS)
+*   **Build System:** Maven
+*   **Packaging Engine:** JDK `jpackage`
+*   **Icons:** Ikonli (FontAwesome integration)
 
-- Java 17+
-- JavaFX
-- Maven
-- Ikonli (icons)
+---
 
-## Prerequisites
+## 📋 Prerequisites
 
-- JDK 17 or newer
-- `jpackage` available (comes with modern JDKs)
-- **WiX Toolset (v3.11 or later)**: **Required** on Windows to create `.exe` or `.msi` installers. Ensure it is installed and the `bin` folder is added to your system `PATH`.
-- Build tools depending on source project:
-  - Maven (`mvn`)
-  - Gradle (`gradle`)
-  - or Ant (`ant`)
+Before using Jar2Exe to create Windows installers, ensure your system meets the following requirements:
 
-## Getting Started
+1.  **JDK 17 or Newer:** The `jpackage` utility must be available in your system's PATH.
+2.  **WiX Toolset (v3.11 or later):** **Required** to generate `.exe` and `.msi` installers.
+    *   [Download WiX Toolset](https://wixtoolset.org/releases/)
+    *   *Important:* Add the WiX `bin` folder to your System Environment Variable `PATH`.
+3.  **Maven:** For building project-based sources.
 
-1. Clone the repository.
-2. Build the project:
+---
+
+## 📖 How to Use
+
+### 1. Source Setup
+Select your compiled `.jar` file or the root directory of your Maven project. Jar2Exe will attempt to scan and identify the `Main-Class` for you.
+
+### 2. App Identity
+Provide your application's professional details:
+*   **App Name & Version:** How it appears in the Task Manager and Add/Remove Programs.
+*   **Vendor:** Your company or personal brand name.
+*   **Icon:** Select a `.ico` file for a professional desktop presence.
+*   **License:** Paste your EULA text. Jar2Exe will inject this directly into the Windows installer's "Agreement" screen.
+
+### 3. Package Options
+Choose your output directory and configure JVM options (like heap size). Select whether you want a portable "App Image" or a full "Installable EXE."
+
+---
+
+## 🔨 Getting Started
+
+To build Jar2Exe itself:
 
 ```bash
+git clone https://github.com/your-repo/Jar2Exe.git
+cd Jar2Exe
 mvn clean package
 ```
 
-3. Run the application from your IDE or using your preferred Java launch command.
+Run the application using your IDE or:
+```bash
+java -jar target/java2exe-1.0.0.jar
+```
 
-## How It Works
+---
 
-1. **Source Setup**  
-   Select a Java project folder or JAR and confirm the main class.
+## 📝 Notes & Troubleshooting
+*   **WiX Errors:** If the build fails with "light.exe" or "candle.exe" errors, verify that the WiX Toolset is correctly installed and accessible from your terminal.
+*   **Icons:** For best results on Windows, always use a high-resolution `.ico` file.
 
-2. **App Identity**  
-   Set name, version, vendor, icon, and license text/file.
-
-3. **Package Options**  
-   Choose output directory and package type, then validate/build.
-
-The app orchestrates project build (if needed), staging, and `jpackage` execution to produce final artifacts.
-
-## Output
-
-By default, packages are generated in a configurable output folder (for example under the user home directory), including app images/installers and helper generated files like license text when required.
-
-## Notes
-
-- On Windows installable targets, `.ico` is preferred for icons.  
-  If another image format is provided, the app attempts conversion for compatibility.
-- Some packaging behavior depends on the source project structure and available build tools.
-- If you encounter errors regarding "light.exe" or "candle.exe", double-check your WiX Toolset installation and PATH configuration.
-
-## License
-
-No explicit open-source license file is currently included in this repository.  
-Add a `LICENSE` file if you want to define distribution terms for the project itself.
+## 📄 License
+This project is provided for development purposes. Please ensure your own generated applications comply with the licenses of the libraries they include.
